@@ -1,8 +1,6 @@
 ﻿
-using Bulky.DataAccess.Migrations;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
-using Bulky_Data_Access.Repository;
 using Bulky_Data_Access.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+   // [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,9 +24,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         {
             var ProductList = _unitOfWork.ProductRepository.GetAll(includeProperties:"Category").ToList();
             
-            return View(ProductList);
+            return View(ProductList);  
         }
-       
         public IActionResult Upsert(int? id)
         {
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.CatergoryRepository.GetAll().Select(u => new SelectListItem
@@ -85,7 +83,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 {
                     _unitOfWork.ProductRepository.Update(obj.Product);
                 }
-                //_unitOfWork.ProductRepository.Add(obj.Product);
+                
                 _unitOfWork.Save();
                 TempData["success"] = "product created succesfully";
                 return RedirectToAction("Index");
@@ -102,11 +100,12 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
         #region API CALLS
         [HttpGet]
-        public IActionResult GetAll() 
+        public IActionResult GetAll()
         {
             var ProductList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category").ToList();
             return Json(new { data = ProductList });
         }
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {

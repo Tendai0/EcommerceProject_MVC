@@ -1,10 +1,12 @@
 ﻿using Bulky.Models;
+using Bulky.Models.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bulky.DataAccess.Data
 {
-    public class DataContext:IdentityDbContext
+    public class DataContext:IdentityDbContext<IdentityUser>
     {
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {
@@ -12,14 +14,23 @@ namespace Bulky.DataAccess.Data
         }
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }    
+        public DbSet<Company> Companies { get; set; }    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);          
             modelBuilder.Entity<Category>().HasData(
 
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Animals", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "WWE", DisplayOrder = 3 });
+
+            modelBuilder.Entity<Company>().HasData(
+
+               new Company { Id = 1, Name = "TenTech", StreetAddress = "123 Tech st", City = "Tech City", PostalCode = "12132", PhoneNumber = "0283747838" ,State="Ashshesh"},
+               new Company { Id = 2, Name = "Rtee", StreetAddress = "34 rtee st", City = "rtee_City", PostalCode = "12132", PhoneNumber = "453311344", State = "Ashshesh" },
+               new Company { Id = 3, Name = "RichBoys", StreetAddress = "123 richst", City = "TechCity", PostalCode = "45323", PhoneNumber = "67543" , State = "Ashshesh" });
 
             modelBuilder.Entity<Product>().HasData(
 
@@ -105,7 +116,7 @@ namespace Bulky.DataAccess.Data
                     Price50 = 22,
                     Price100 = 20,
                     CategoryId = 3,
-                    ImageUrl= ""
+                    ImageUrl = ""
                 });
         }
     }

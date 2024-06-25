@@ -9,7 +9,10 @@ namespace Bulky_Data_Access.Repository.IRepository
     public interface IUnitOfWork
     {
         ICatergoryRepository CatergoryRepository { get; }
-        IProductRepository ProductRepository { get; }
+        IProductRepository ProductRepository { get;}
+        ICompany CompanyRepository { get; }
+        IshoppingCartRepository ShoppingCartRepository { get; }
+        IApplicationUserRepository ApplicationUserRepository { get; }
         void Save();
     }
 }

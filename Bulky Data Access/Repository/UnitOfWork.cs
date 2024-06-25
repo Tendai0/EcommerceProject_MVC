@@ -14,13 +14,18 @@ namespace Bulky_Data_Access.Repository
         private DataContext _context;
         public ICatergoryRepository CatergoryRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
+        public ICompany CompanyRepository { get; private set; }
+        public IshoppingCartRepository ShoppingCartRepository { get; private set; }
+        public IApplicationUserRepository ApplicationUserRepository { get;private set; }
         public UnitOfWork(DataContext context) 
         {
             _context = context;
+            ApplicationUserRepository = new ApplicationUserRepository(_context);
+            ShoppingCartRepository = new ShoppingCartRepository(_context);
             CatergoryRepository = new CatergoryRepository(_context);
-            ProductRepository = new ProductRepository(_context);    
+            ProductRepository = new ProductRepository(_context);
+            CompanyRepository = new CompanyRepository(_context);
         }
-      
 
         public void Save()
         {
